@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "a sql builder",
   "main": "lib/index.js",
+  "typings": "types/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
