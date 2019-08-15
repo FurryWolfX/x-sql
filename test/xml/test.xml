@@ -5,7 +5,7 @@
             and name = @name
         </if>
         and id in (
-        <for seperator="," array="idList">
+        <for separator="," array="idList">
             @id
         </for>
         )
