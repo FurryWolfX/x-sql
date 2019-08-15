@@ -1,0 +1,20 @@
+{
+  "name": "x-sql",
+  "version": "1.0.0",
+  "description": "a sql builder",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {},
+  "author": "wolfx",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  },
+  "dependencies": {
+    "sqlstring": "^2.3.1",
+    "xml-reader": "^2.4.3"
+  }
+}
