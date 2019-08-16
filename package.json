@@ -1,12 +1,11 @@
 {
   "name": "x-sql",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha",
   "description": "a sql builder",
   "main": "lib/index.js",
   "typings": "types/index.d.ts",
   "directories": {
-    "lib": "lib",
-    "test": "test"
+    "lib": "lib"
   },
   "scripts": {},
   "author": "wolfx",
