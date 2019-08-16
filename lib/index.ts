@@ -14,10 +14,10 @@ type Config = {
 };
 
 class Builder {
-  dir: string;
-  debug: boolean;
-  debugCallback: (log: string) => void;
-  cache: any;
+  private readonly dir: string;
+  private readonly debug: boolean;
+  private readonly debugCallback: (log: string) => void;
+  private readonly cache: any;
 
   constructor(config: Config) {
     this.dir = config.dir;
@@ -27,7 +27,7 @@ class Builder {
     this.readXmlToCache();
   }
 
-  log(log: string) {
+  private log(log: string) {
     if (this.debug) {
       if (typeof this.debugCallback === "function") {
         this.debugCallback(log);
@@ -35,7 +35,7 @@ class Builder {
     }
   }
 
-  readXmlToCache() {
+  private readXmlToCache() {
     const fileList = readFileList(this.dir);
     fileList.forEach(file => {
       const xml = fs.readFileSync(file.url, {
@@ -69,7 +69,7 @@ class Builder {
    * @param params
    * @returns {string}
    */
-  getSqlDefine(namespace: string, queryName: string, params: any) {
+  private getSqlDefine(namespace: string, queryName: string, params: any) {
     const queryList = this.cache[namespace];
     const sql = [];
     queryList.forEach(query => {
@@ -144,7 +144,7 @@ class Builder {
    * @param data
    * @returns {{params: (*|null), sql: *}}
    */
-  fillParams(sql, data) {
+  private fillParams(sql, data) {
     const params = [];
     // fill @key
     sql = sql.replace(keyReg, (match, key) => {
