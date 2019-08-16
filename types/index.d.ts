@@ -4,7 +4,7 @@ declare interface Config {
   debugCallback(log: string): void;
 }
 
-export declare class Builder {
+declare class Builder {
   constructor(config: Config);
   build(namespace: string, queryName: string, params: any): string;
 }

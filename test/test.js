@@ -1,5 +1,5 @@
 const path = require("path");
-const Builder = require("../lib/index");
+const Builder = require("../lib/index").default;
 
 const builder = new Builder({
   dir: path.resolve(__dirname, "./xml"),
