@@ -1,6 +1,12 @@
-const fs = require("fs");
+import * as fs from "fs";
 
-function readFileList(path, filesList = []) {
+type FileItem = {
+  path?: string;
+  filename?: string;
+  url?: string;
+};
+
+export function readFileList(path: string, filesList = []): FileItem[] {
   const files = fs.readdirSync(path);
   files.forEach((itm, index) => {
     const stat = fs.statSync(path + "/" + itm);
@@ -8,7 +14,7 @@ function readFileList(path, filesList = []) {
       //递归读取文件
       readFileList(path + "/" + itm, filesList);
     } else {
-      const obj = {}; //定义一个对象存放文件的路径和名字
+      const obj: FileItem = {}; //定义一个对象存放文件的路径和名字
       obj.path = path; //路径
       obj.filename = itm; //名字
       obj.url = path + "/" + itm;
@@ -17,5 +23,3 @@ function readFileList(path, filesList = []) {
   });
   return filesList;
 }
-
-module.exports.readFileList = readFileList;

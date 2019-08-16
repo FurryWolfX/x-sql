@@ -1,17 +1,21 @@
 {
   "name": "@wolfx/x-sql",
-  "version": "1.0.3-alpha",
+  "version": "1.0.4-alpha",
   "description": "a sql builder",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "typings": "types/index.d.ts",
   "directories": {
     "lib": "lib"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc --watch"
+  },
   "author": "wolfx",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "@types/node": "^12.7.2",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "sqlstring": "^2.3.1",

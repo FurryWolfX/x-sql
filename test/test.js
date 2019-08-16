@@ -1,12 +1,12 @@
 const path = require("path");
-const Builder = require("../lib/index").default;
+const Builder = require("../dist/index").default;
 
 const builder = new Builder({
   dir: path.resolve(__dirname, "./xml"),
   debug: true,
   debugCallback: log => {
     console.log(log);
-  }
+  },
 });
 
 const result = builder.build("test", "getUser", {

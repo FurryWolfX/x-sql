@@ -1,14 +1,25 @@
-const vm = require("vm");
-const SqlString = require("sqlstring");
-const XmlReader = require("xml-reader");
-const fs = require("fs");
-const { readFileList } = require("./utils");
+import * as vm from "vm";
+import * as SqlString from "sqlstring";
+import * as XmlReader from "xml-reader";
+import * as fs from "fs";
+import { readFileList } from "./utils";
 
 const keyReg = /@([\w._]+)/g;
 const ddlKeyReg = /@@([\w._]+)/g;
 
+type Config = {
+  dir: string;
+  debug: boolean;
+  debugCallback: (log: string) => void;
+};
+
 class Builder {
-  constructor(config) {
+  dir: string;
+  debug: boolean;
+  debugCallback: (log: string) => void;
+  cache: any;
+
+  constructor(config: Config) {
     this.dir = config.dir;
     this.debug = config.debug || false;
     this.debugCallback = config.debugCallback;
@@ -16,7 +27,7 @@ class Builder {
     this.readXmlToCache();
   }
 
-  log(log) {
+  log(log: string) {
     if (this.debug) {
       if (typeof this.debugCallback === "function") {
         this.debugCallback(log);
@@ -58,7 +69,7 @@ class Builder {
    * @param params
    * @returns {string}
    */
-  getSqlDefine(namespace, queryName, params) {
+  getSqlDefine(namespace: string, queryName: string, params: any) {
     const queryList = this.cache[namespace];
     const sql = [];
     queryList.forEach(query => {
@@ -146,7 +157,7 @@ class Builder {
     };
   }
 
-  build(namespace, queryName, params) {
+  build(namespace: string, queryName: string, params: any): string {
     const sqlDefine = this.getSqlDefine(namespace, queryName, params);
     this.log("[SQLDefine]: " + sqlDefine);
 
@@ -158,4 +169,4 @@ class Builder {
   }
 }
 
-module.exports.default = Builder;
+export default Builder;
