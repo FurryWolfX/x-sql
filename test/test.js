@@ -23,5 +23,5 @@ const result = builder.build("test", "getUser", {
 });
 console.log(result);
 
-const result2 = builder.build("test2", "getUser2",{});
-console.log(result2);
+// const result2 = builder.build("test2", "getUser2",{});
+// console.log(result2);

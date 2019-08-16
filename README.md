@@ -1,17 +1,19 @@
 # example
 
+**待优化** `for` 里面不能再嵌套其他标签。
+
 ```xml
 <root namespace="test">
     <query name="getUser">
         select * from user where 1=1
         <if condition="@flag === 1">
             and name = @name
+            and id in (
+            <for separator="," array="idList">
+                @id
+            </for>
+            )
         </if>
-        and id in (
-        <for separator="," array="idList">
-            @id
-        </for>
-        )
     </query>
 </root>
 ```
