@@ -127,15 +127,17 @@ class Builder {
           });
         };
         build(query);
-      } else {
-        throw new Error("query:" + query.attributes.name + " not found!");
       }
     });
-    return sql
-      .join(" ")
-      .replace(/[\r|\n]/g, "") // 去除换行
-      .replace(/\s+/g, " ") // 去除多于空格
-      .trim();
+    if (sql.length > 0) {
+      return sql
+        .join(" ")
+        .replace(/[\r|\n]/g, "") // 去除换行
+        .replace(/\s+/g, " ") // 去除多于空格
+        .trim();
+    } else {
+      throw new Error(`can not found ${namespace}.${queryName}`);
+    }
   }
 
   /**
