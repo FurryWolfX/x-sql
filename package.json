@@ -1,9 +1,9 @@
 {
   "name": "@wolfx/x-sql",
-  "version": "1.0.6-alpha",
+  "version": "1.0.7",
   "description": "a sql builder",
   "main": "dist/index.js",
-  "typings": "types/index.d.ts",
+  "typings": "src/index.ts",
   "directories": {
     "lib": "lib"
   },
