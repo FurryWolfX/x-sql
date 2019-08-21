@@ -44,3 +44,23 @@ const result = builder.build("test", "getUser", {
 });
 console.log(result);
 ```
+
+# 简易API
+
+```typescript
+interface SimpleBuilder {
+  select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string): string;
+  count(table: string, whereObject: any, op: string = "AND"): string;
+  insert(table: string, data: any): string;
+  update(table: string, data: any, whereObject: any, op: string = "AND"): string;
+  delete(table: string, whereObject: any, op: string = "AND"): string;
+}
+```
+
+```javascript
+console.log(Builder.select("user", ["name", "age"], { id: 1, name: "wolfx" }));
+console.log(Builder.count("user", {}));
+console.log(Builder.insert("user", { id: 1, name: "wolfx" }));
+console.log(Builder.update("user", { id: 1, name: "wolfx" }, { id: 2, name: "wolfx2" }));
+console.log(Builder.delete("user", { id: 2, name: "wolfx2" }));
+```

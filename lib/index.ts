@@ -3,23 +3,25 @@ import * as SqlString from "sqlstring";
 import * as XmlReader from "xml-reader";
 import * as fs from "fs";
 import { readFileList } from "./utils";
+import SimpleBuilder from "./SimpleBuilder";
 
 const keyReg = /@([\w._]+)/g;
 const ddlKeyReg = /@@([\w._]+)/g;
 
-type Config = {
+export type Config = {
   dir: string;
   debug: boolean;
   debugCallback: (log: string) => void;
 };
 
-class Builder {
+class Builder extends SimpleBuilder {
   private readonly dir: string;
   private readonly debug: boolean;
   private readonly debugCallback: (log: string) => void;
   private readonly cache: any;
 
   constructor(config: Config) {
+    super();
     this.dir = config.dir;
     this.debug = config.debug || false;
     this.debugCallback = config.debugCallback;
@@ -39,7 +41,7 @@ class Builder {
     const fileList = readFileList(this.dir);
     fileList.forEach(file => {
       const xml = fs.readFileSync(file.url, {
-        encoding: "utf-8",
+        encoding: "utf-8"
       });
       const root = XmlReader.parseSync(xml);
       if (root.name === "root" && root.attributes.namespace) {
@@ -127,15 +129,17 @@ class Builder {
           });
         };
         build(query);
-      } else {
-        throw new Error("query:" + query.attributes.name + " not found!");
       }
     });
-    return sql
-      .join(" ")
-      .replace(/[\r|\n]/g, "") // 去除换行
-      .replace(/\s+/g, " ") // 去除多于空格
-      .trim();
+    if (sql.length > 0) {
+      return sql
+        .join(" ")
+        .replace(/[\r|\n]/g, "") // 去除换行
+        .replace(/\s+/g, " ") // 去除多于空格
+        .trim();
+    } else {
+      throw new Error(`can not found ${namespace}.${queryName}`);
+    }
   }
 
   /**
@@ -153,7 +157,7 @@ class Builder {
     });
     return {
       sql: sql,
-      params: params.length > 0 ? params : null,
+      params: params.length > 0 ? params : null
     };
   }
 
