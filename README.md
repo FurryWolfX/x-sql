@@ -49,7 +49,7 @@ console.log(result);
 
 ```typescript
 interface SimpleBuilder {
-  select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string): string;
+  select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string;
   count(table: string, whereObject: any, op: string = "AND"): string;
   insert(table: string, data: any): string;
   update(table: string, data: any, whereObject: any, op: string = "AND"): string;
