@@ -4,7 +4,7 @@ import * as TSqlString from "tsqlstring";
 let dialect: string = "mysql";
 
 class SimpleBuilder {
-  public static setDialect(value): void {
+  public static setDialect(value: string): void {
     dialect = value;
   }
   /**

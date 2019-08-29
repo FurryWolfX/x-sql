@@ -49,7 +49,7 @@ console.log(result);
 
 ```typescript
 interface SimpleBuilder {
-  setDialect(value): void;
+  setDialect(value: string): void;
   escapeId(value: string): string;
   select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string;
   count(table: string, whereObject: any, op: string = "AND"): string;
