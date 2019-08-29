@@ -1,7 +1,7 @@
 const path = require("path");
 const Builder = require("../dist/index").default;
 
-Builder.setDialect("mssql");
+Builder.setDialect(Builder.MYSQL);
 
 const builder = new Builder({
   dir: path.resolve(__dirname, "./xml"),

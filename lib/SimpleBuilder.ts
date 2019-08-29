@@ -1,9 +1,12 @@
 import * as SqlString from "sqlstring";
 import * as TSqlString from "tsqlstring";
 
-let dialect: string = "mysql";
+let dialect: string = "none";
 
 class SimpleBuilder {
+  public static MYSQL: string = "mysql";
+  public static MSSQL: string = "mssql";
+  public static NONE: string = "none";
   public static setDialect(value: string): void {
     dialect = value;
   }
@@ -12,9 +15,9 @@ class SimpleBuilder {
    */
   public static escapeId(value: string): string {
     console.log(dialect);
-    if (dialect === "mysql") {
+    if (dialect === SimpleBuilder.MYSQL) {
       return SqlString.escapeId(value);
-    } else if (dialect === "mssql") {
+    } else if (dialect === SimpleBuilder.MSSQL) {
       return TSqlString.escapeId(value);
     } else {
       return value;
@@ -28,14 +31,7 @@ class SimpleBuilder {
    * @param orderBy 排序 xxx asc desc
    * @param limit 数量限制
    */
-  public static select(
-    table: string,
-    cols: string[],
-    whereObject: any,
-    op: string = "AND",
-    orderBy?: string,
-    limit?: number[],
-  ): string {
+  public static select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string {
     const whereKeys = Object.keys(whereObject || {});
     const sql = ["SELECT", cols.join(", "), "FROM", SimpleBuilder.escapeId(table)];
     const params = [];

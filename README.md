@@ -27,7 +27,7 @@ const builder = new Builder({
   debug: true,
   debugCallback: log => {
     console.log(log);
-  }
+  },
 });
 
 const result = builder.build("test", "getUser", {
@@ -45,10 +45,13 @@ const result = builder.build("test", "getUser", {
 console.log(result);
 ```
 
-# 简易API
+# 简易 API
 
 ```typescript
 interface SimpleBuilder {
+  MYSQL: string;
+  MSSQL: string;
+  NONE: string;
   setDialect(value: string): void;
   escapeId(value: string): string;
   select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string;
@@ -60,7 +63,7 @@ interface SimpleBuilder {
 ```
 
 ```javascript
-Builder.setDialect("mysql");
+Builder.setDialect(Builder.MYSQL);
 console.log(Builder.select("user", ["name", "age"], { id: 1, name: "wolfx" }));
 console.log(Builder.count("user", {}));
 console.log(Builder.insert("user", { id: 1, name: "wolfx" }));
