@@ -49,7 +49,7 @@ console.log(result);
 
 ```typescript
 interface SimpleBuilder {
-  dialect: string;
+  setDialect(value): void;
   escapeId(value: string): string;
   select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string;
   count(table: string, whereObject: any, op: string = "AND"): string;
@@ -60,6 +60,7 @@ interface SimpleBuilder {
 ```
 
 ```javascript
+Builder.setDialect("mysql");
 console.log(Builder.select("user", ["name", "age"], { id: 1, name: "wolfx" }));
 console.log(Builder.count("user", {}));
 console.log(Builder.insert("user", { id: 1, name: "wolfx" }));
