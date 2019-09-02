@@ -41,7 +41,7 @@ class Builder extends SimpleBuilder {
     const fileList = readFileList(this.dir);
     fileList.forEach(file => {
       const xml = fs.readFileSync(file.url, {
-        encoding: "utf-8"
+        encoding: "utf-8",
       });
       const root = XmlReader.parseSync(xml);
       if (root.name === "root" && root.attributes.namespace) {
@@ -118,7 +118,11 @@ class Builder extends SimpleBuilder {
               }
               array.forEach(item => {
                 const s = sqlInFor.replace(keyReg, (match, key) => {
-                  return item[key];
+                  if (typeof item[key] === "string") {
+                    return "'" + item[key] + "'";
+                  } else {
+                    return item[key];
+                  }
                 });
                 sqlsInFor.push(s);
               });
@@ -157,7 +161,7 @@ class Builder extends SimpleBuilder {
     });
     return {
       sql: sql,
-      params: params.length > 0 ? params : null
+      params: params.length > 0 ? params : null,
     };
   }
 
