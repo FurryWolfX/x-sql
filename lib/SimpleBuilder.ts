@@ -14,7 +14,6 @@ class SimpleBuilder {
    * 方言
    */
   public static escapeId(value: string): string {
-    console.log(dialect);
     if (dialect === SimpleBuilder.MYSQL) {
       return SqlString.escapeId(value);
     } else if (dialect === SimpleBuilder.MSSQL) {
