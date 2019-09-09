@@ -9,5 +9,8 @@
             </for>
             )
         </if>
+        <if condition="!!@flag2">
+            AND flag2 = @flag2
+        </if>
     </query>
 </root>

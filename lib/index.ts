@@ -91,7 +91,11 @@ class Builder extends SimpleBuilder {
                 return params[key];
               });
               code = code.replace(keyReg, (match, key) => {
-                return SqlString.escape(params[key]);
+                if (typeof params[key] === "string") {
+                  return `'${params[key]}'`;
+                } else {
+                  return params[key];
+                }
               });
               code = "condition = " + code + ";";
               // 1. 创建一个 vm.Script 实例, 编译要执行的代码
