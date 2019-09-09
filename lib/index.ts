@@ -87,12 +87,11 @@ class Builder extends SimpleBuilder {
             } else if (child.name === "if" && child.children && child.children[0].type === "text") {
               // 处理 if 相关的逻辑
               let code = child.attributes.condition;
+              code = code.replace(ddlKeyReg, (match, key) => {
+                return params[key];
+              });
               code = code.replace(keyReg, (match, key) => {
-                if (typeof params[key] === "string") {
-                  return "'" + params[key] + "'";
-                } else {
-                  return params[key];
-                }
+                return SqlString.escape(params[key]);
               });
               code = "condition = " + code + ";";
               // 1. 创建一个 vm.Script 实例, 编译要执行的代码
@@ -109,20 +108,19 @@ class Builder extends SimpleBuilder {
               }
             } else if (child.name === "for" && child.children && child.children[0].type === "text") {
               // 处理 for 相关的逻辑
-              const separator = child.attributes.separator;
-              const array = params[child.attributes.array];
-              const sqlInFor = child.children[0].value;
+              const separator = child.attributes.separator; // 分隔符号
+              const array = params[child.attributes.array]; // 参数数组
+              const sqlInFor = child.children[0].value; // 需要循环的SQL
               const sqlsInFor = [];
               if (Array.isArray(array) === false) {
                 throw new Error("array is not an array in query:" + query.attributes.name);
               }
               array.forEach(item => {
-                const s = sqlInFor.replace(keyReg, (match, key) => {
-                  if (typeof item[key] === "string") {
-                    return "'" + item[key] + "'";
-                  } else {
-                    return item[key];
-                  }
+                let s = sqlInFor.replace(ddlKeyReg, (match, key) => {
+                  return item[key];
+                });
+                s = s.replace(keyReg, (match, key) => {
+                  return SqlString.escape(item[key]);
                 });
                 sqlsInFor.push(s);
               });
@@ -154,6 +152,10 @@ class Builder extends SimpleBuilder {
    */
   private fillParams(sql, data) {
     const params = [];
+    // fill @@key
+    sql = sql.replace(ddlKeyReg, (match, key) => {
+      return data[key];
+    });
     // fill @key
     sql = sql.replace(keyReg, (match, key) => {
       params.push(data[key]);

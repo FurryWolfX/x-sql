@@ -18,6 +18,8 @@
 </root>
 ```
 
+注意：如果不希望自动判断变量类型，使用 `@@param` 代替 `@param` 。
+
 ```javascript
 const path = require("path");
 const Builder = require("@wolfx/x-sql").default;
