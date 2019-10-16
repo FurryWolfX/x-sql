@@ -43,7 +43,8 @@ class Builder extends SimpleBuilder {
       const xml = fs.readFileSync(file.url, {
         encoding: "utf-8",
       });
-      const root = XmlReader.parseSync(xml);
+      const xmlFiltered = xml.replace(/<!--.[^-]*(?=-->)-->/g, "");
+      const root = XmlReader.parseSync(xmlFiltered);
       if (root.name === "root" && root.attributes.namespace) {
         // 校验 query
         root.children.forEach(query => {

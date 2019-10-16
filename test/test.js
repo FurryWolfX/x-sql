@@ -28,8 +28,8 @@ console.log(result);
 // const result2 = builder.build("test2", "getUser2",{});
 // console.log(result2);
 
-console.log(Builder.select("user", ["name", "age"], { id: 1, name: "wolfx" }));
-console.log(Builder.insert("user", { id: 1, name: "wolfx" }));
-console.log(Builder.update("user", { id: 1, name: "wolfx" }, { id: 2, name: "wolfx2" }));
-console.log(Builder.delete("user", { id: 2, name: "wolfx2" }));
-console.log(Builder.count("user"));
+// console.log(Builder.select("user", ["name", "age"], { id: 1, name: "wolfx" }));
+// console.log(Builder.insert("user", { id: 1, name: "wolfx" }));
+// console.log(Builder.update("user", { id: 1, name: "wolfx" }, { id: 2, name: "wolfx2" }));
+// console.log(Builder.delete("user", { id: 2, name: "wolfx2" }));
+// console.log(Builder.count("user"));
