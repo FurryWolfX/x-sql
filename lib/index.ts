@@ -14,6 +14,20 @@ export type Config = {
   debugCallback: (log: string) => void;
 };
 
+type XNode = {
+  name: string;
+  type: string;
+  value: string;
+  attributes: {
+    namespace: string;
+    name: string;
+    condition: string;
+    separator: string;
+    array: string;
+  };
+  children: XNode[];
+};
+
 class Builder extends SimpleBuilder {
   private readonly dir: string;
   private readonly debug: boolean;
@@ -47,9 +61,9 @@ class Builder extends SimpleBuilder {
       const root = XmlReader.parseSync(xmlFiltered);
       if (root.name === "root" && root.attributes.namespace) {
         // 校验 query
-        root.children.forEach(query => {
+        root.children.forEach((query: XNode) => {
           if (query.name === "query" && query.attributes.name) {
-            query.children.forEach(child => {
+            query.children.forEach((child: XNode) => {
               if (child.type !== "text" && child.name !== "if" && child.name !== "for") {
                 throw new Error("not a valid query define in " + file.filename);
               }
@@ -74,13 +88,13 @@ class Builder extends SimpleBuilder {
    */
   private getSqlDefine(namespace: string, queryName: string, params: any) {
     const queryList = this.cache[namespace];
-    const sql = [];
-    queryList.forEach(query => {
+    const sql: string[] = [];
+    queryList.forEach((query: XNode) => {
       if (query.name === "query" && query.attributes.name === queryName) {
         // 节点如果是text则取sql
         // 如果是if，先判断条件，再进入下层递归
         // 如果是for，进行循环填充
-        const build = _query => {
+        const build = (_query: XNode) => {
           _query.children.forEach(child => {
             if (child.type === "text") {
               // 直接文本
@@ -116,11 +130,11 @@ class Builder extends SimpleBuilder {
               const separator = child.attributes.separator; // 分隔符号
               const array = params[child.attributes.array]; // 参数数组
               const sqlInFor = child.children[0].value; // 需要循环的SQL
-              const sqlsInFor = [];
+              const sqlsInFor: string[] = [];
               if (Array.isArray(array) === false) {
                 throw new Error("array is not an array in query:" + query.attributes.name);
               }
-              array.forEach(item => {
+              array.forEach((item: string) => {
                 let s = sqlInFor.replace(ddlKeyReg, (match, key) => {
                   return item[key];
                 });
@@ -151,12 +165,9 @@ class Builder extends SimpleBuilder {
 
   /**
    * 填充数据
-   * @param sql
-   * @param data
-   * @returns {{params: (*|null), sql: *}}
    */
-  private fillParams(sql, data) {
-    const params = [];
+  private fillParams(sql: string, data: string) {
+    const params: Array<string|number> = [];
     // fill @@key
     sql = sql.replace(ddlKeyReg, (match, key) => {
       return data[key];

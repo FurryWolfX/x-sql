@@ -1,6 +1,10 @@
 import * as SqlString from "sqlstring";
 import * as TSqlString from "tsqlstring";
 
+type KeyValue<T> = {
+  [key: string]: T;
+};
+
 let dialect: string = "none";
 
 class SimpleBuilder {
@@ -30,11 +34,11 @@ class SimpleBuilder {
    * @param orderBy 排序 xxx asc desc
    * @param limit 数量限制
    */
-  public static select(table: string, cols: string[], whereObject: any, op: string = "AND", orderBy?: string, limit?: number[]): string {
+  public static select(table: string, cols: string[], whereObject: KeyValue<string | number>, op: string = "AND", orderBy?: string, limit?: number[]): string {
     const whereKeys = Object.keys(whereObject || {});
     const sql = ["SELECT", cols.join(", "), "FROM", SimpleBuilder.escapeId(table)];
-    const params = [];
-    const where = [];
+    const params: Array<string | number> = [];
+    const where: string[] = [];
     if (whereKeys.length > 0) {
       sql.push("WHERE");
       whereKeys.forEach(key => {
@@ -61,11 +65,11 @@ class SimpleBuilder {
    * @param whereObject 查询条件
    * @param op 条件操作符，默认 and
    */
-  public static count(table: string, whereObject: any, op: string = "AND"): string {
+  public static count(table: string, whereObject: KeyValue<string | number>, op: string = "AND"): string {
     const whereKeys = Object.keys(whereObject || {});
     const sql = ["SELECT COUNT(*) AS count", "FROM", SimpleBuilder.escapeId(table)];
-    const params = [];
-    const where = [];
+    const params: Array<string | number> = [];
+    const where: string[] = [];
     if (whereKeys.length > 0) {
       sql.push("where");
       whereKeys.forEach(key => {
@@ -81,11 +85,11 @@ class SimpleBuilder {
    * @param table 表名
    * @param data 需要插入的数据，根据键名自动填充到相应的字段
    */
-  public static insert(table: string, data: any): string {
+  public static insert(table: string, data:  KeyValue<string | number>): string {
     const keys = Object.keys(data || {});
-    const params = [];
-    const cols = [];
-    const values = [];
+    const params: Array<string | number> = [];
+    const cols: string[] = [];
+    const values: string[] = [];
     keys.forEach(key => {
       cols.push(SimpleBuilder.escapeId(key));
       params.push(data[key]);
@@ -106,12 +110,12 @@ class SimpleBuilder {
    * @param whereObject 查询条件
    * @param op 条件操作符，默认 and
    */
-  public static update(table: string, data: any, whereObject: any, op: string = "AND"): string {
+  public static update(table: string, data: KeyValue<string | number>, whereObject: KeyValue<string | number>, op: string = "AND"): string {
     const dataKeys = Object.keys(data || {});
     const whereKeys = Object.keys(whereObject || {});
-    const values = [];
-    const where = [];
-    const params = [];
+    const values: string[] = [];
+    const where: string[] = [];
+    const params: Array<string | number> = [];
     dataKeys.forEach(key => {
       values.push(`${SimpleBuilder.escapeId(key)} = ?`);
       params.push(data[key]);
@@ -134,10 +138,10 @@ class SimpleBuilder {
    * @param whereObject 查询条件
    * @param op 条件操作符，默认 and
    */
-  public static delete(table: string, whereObject: any, op: string = "AND"): string {
+  public static delete(table: string, whereObject: KeyValue<string | number>, op: string = "AND"): string {
     const whereKeys = Object.keys(whereObject || {});
-    const where = [];
-    const params = [];
+    const where: string[] = [];
+    const params: Array<string | number> = [];
     whereKeys.forEach(key => {
       where.push(`${SimpleBuilder.escapeId(key)} = ?`);
       params.push(whereObject[key]);

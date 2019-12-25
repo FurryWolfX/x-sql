@@ -6,7 +6,7 @@ type FileItem = {
   url?: string;
 };
 
-export function readFileList(path: string, filesList = []): FileItem[] {
+export function readFileList(path: string, filesList: FileItem[] = []): FileItem[] {
   const files = fs.readdirSync(path);
   files.forEach((itm, index) => {
     const stat = fs.statSync(path + "/" + itm);
