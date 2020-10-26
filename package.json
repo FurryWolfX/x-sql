@@ -1,9 +1,12 @@
 {
   "name": "@wolfx/x-sql",
-  "version": "1.4.1",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "version": "1.4.2",
   "description": "a sql builder",
   "main": "dist/index.js",
-  "typings": "lib/index.ts",
+  "types": "lib/index.ts",
   "directories": {
     "lib": "lib"
   },
@@ -15,7 +18,7 @@
   "devDependencies": {
     "@types/node": "^12.7.2",
     "prettier": "^1.18.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "sqlstring": "^2.3.1",

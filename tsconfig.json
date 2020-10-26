@@ -5,7 +5,9 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "removeComments": true,
+    "allowJs": true,
     "sourceMap": true,
+    "strict": true,
     "outDir": "./dist",
     "baseUrl": "./lib"
   }

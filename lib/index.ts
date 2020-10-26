@@ -54,27 +54,29 @@ class Builder extends SimpleBuilder {
   private readXmlToCache() {
     const fileList = readFileList(this.dir);
     fileList.forEach(file => {
-      const xml = fs.readFileSync(file.url, {
-        encoding: "utf-8",
-      });
-      const xmlFiltered = xml.replace(/<!--.[^-]*(?=-->)-->/g, "");
-      const root = XmlReader.parseSync(xmlFiltered);
-      if (root.name === "root" && root.attributes.namespace) {
-        // 校验 query
-        root.children.forEach((query: XNode) => {
-          if (query.name === "query" && query.attributes.name) {
-            query.children.forEach((child: XNode) => {
-              if (child.type !== "text" && child.name !== "if" && child.name !== "for") {
-                throw new Error("not a valid query define in " + file.filename);
-              }
-            });
-          } else {
-            throw new Error("not a query define in " + file.filename);
-          }
+      if (file.url) {
+        const xml = fs.readFileSync(file.url, {
+          encoding: "utf-8",
         });
-        this.cache[root.attributes.namespace] = root.children;
-      } else {
-        throw new Error("root or namespace not found in " + file.filename);
+        const xmlFiltered = xml.replace(/<!--.[^-]*(?=-->)-->/g, "");
+        const root = XmlReader.parseSync(xmlFiltered);
+        if (root.name === "root" && root.attributes.namespace) {
+          // 校验 query
+          root.children.forEach((query: XNode) => {
+            if (query.name === "query" && query.attributes.name) {
+              query.children.forEach((child: XNode) => {
+                if (child.type !== "text" && child.name !== "if" && child.name !== "for") {
+                  throw new Error("not a valid query define in " + file.filename);
+                }
+              });
+            } else {
+              throw new Error("not a query define in " + file.filename);
+            }
+          });
+          this.cache[root.attributes.namespace] = root.children;
+        } else {
+          throw new Error("root or namespace not found in " + file.filename);
+        }
       }
     });
   }
@@ -191,7 +193,7 @@ class Builder extends SimpleBuilder {
     this.log("[PreparedSQL]: " + prepared.sql);
     this.log("[SQL Params]: " + prepared.params);
 
-    return SqlString.format(prepared.sql, prepared.params);
+    return SqlString.format(prepared.sql, prepared.params || []);
   }
 }
 
